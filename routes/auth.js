@@ -12,6 +12,18 @@ function generateJWT(user) {
     }, process.env.JWT_SECRET)
 }
 
+function authenticate(req, res, next){
+    jwt.verify(req.headers.authorization, process.env.JWT_SECRET, function (err, user) {
+        if (err) throw ('No Authorized User Found');
+        Users.findOne({_id: user._id}).lean().exec((err, authUser) => {
+            if (err) throw err;
+            res.json({
+                user: authUser
+            })
+        })
+    })
+}
+
 route.post('/login', (req, res) => {
     const email = req.body.email,
         password = req.body.password;

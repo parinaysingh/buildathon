@@ -5,8 +5,9 @@ const express = require('express')
     , dotenv = require('dotenv')
     , Promise = require('bluebird')
     , auth = require('./routes/auth')
-    // , posts = require('./routes/posts')
-    // , contribs = require('./routes/contribs')
+    , scheduled = require('./routes/scheduled')
+    , toSchedule = require('./routes/toSchedule')
+    , interviewers = require('./routes/interviewers')
     , compression = require('compression')
     , path = require('path');
 
@@ -29,10 +30,11 @@ app.use(bodyParser.urlencoded({
 app.use(express.static(path.join(__dirname, 'public'), {
     maxAge: 122894884
 }));
-//
+
 app.use('/auth', auth);
-// // app.use('/posts', posts);
-// // app.use('/contribs', contribs);
+app.use('/scheduled', scheduled);
+app.use('/toschedule', toSchedule);
+app.use('/interviewers', interviewers);
 
 app.get('/', function (req, res) {
     res.json({
