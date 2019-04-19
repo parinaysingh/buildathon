@@ -44,32 +44,27 @@ route.get('/', (req, res) => {
 });
 
 route.get('/set', (req, res) => {
-    // Student({
-    //     name: 'Student 2',
-    //     email: 'student2@student.com',
-    // }).save((err, scheduled) => {
-    //     if (err) throw (err);
-    //     res.json(scheduled)
-    // });
-
-    // interviewer({
-    //     name: 'Interviewer 2',
-    //     email: 'intervie2@interview.com',
-    //     slots: [{start: 4, end: 7, booked: false}, {start: 2, end: 3, booked: false}]
-    // }).save((err, scheduled) => {
-    //     if (err) throw (err);
-    //     res.json(scheduled)
-    // });
-
-    shortlistedStudent({
-        student: ObjectId("5cb8a05e8befcc7910ff0d5f"),
-        // student: ObjectId("5cb88e4399ff666a51db94a0"),
-        scheduled: false,
-        interviewer: ObjectId("5cb8a08cf097db795b461983"),
-        time: new Date().toISOString()
-    }).save((err, scheduled) => {
+    Student({
+        name: 'Student 3',
+        email: 'student3@student.com',
+    }).save((err, stud) => {
         if (err) throw (err);
-        res.json(scheduled)
+        interviewer({
+            name: 'Interviewer 3',
+            email: 'intervie3@interview.com',
+            slots: [{start: 1, end: 2, booked: false}, {start: 3, end: 4, booked: false}]
+        }).save((err, interview) => {
+            if (err) throw (err);
+            shortlistedStudent({
+                student: stud._id,
+                scheduled: false,
+                interviewer: interview._id,
+                time: new Date().toISOString()
+            }).save((err, scheduled) => {
+                if (err) throw (err);
+                res.json(scheduled)
+            });
+        });
     });
 });
 
